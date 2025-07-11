@@ -1,5 +1,9 @@
 # GPT-Agents (AI Agents In Action): Exploring the World of AI Agents and Assistants
 
+# Node I pulled all this code from the following manning website.  
+
+https://www.manning.com/books/ai-agents-in-action
+
 ## About the Book
 "AI Agents in Action," published by Manning Publications, is an insightful exploration into the world of large language model-empowered agents and assistants, focusing on AI Agents powered by large language models. This book offers a comprehensive guide to understanding, developing, and utilizing GPT agents in the realm of AI and machine learning.
 
