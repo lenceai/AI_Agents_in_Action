@@ -1,1 +1,1 @@
-Why was the AI engineer broke? Because he spent all his money on cookies, but his browser kept eating them.
+Why did the AI engineer go broke? Because he kept spending all his money on neural networks instead of saving for a "byte"!
