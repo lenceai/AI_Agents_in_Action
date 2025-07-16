@@ -1,6 +1,6 @@
 # GPT-Agents (AI Agents In Action): Exploring the World of AI Agents and Assistants
 
-# Node I pulled all this code from the following manning website.  
+# Note I pulled all this code from the following manning website.  
 
 https://www.manning.com/books/ai-agents-in-action
 
