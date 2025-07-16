@@ -4,8 +4,31 @@ import agentops
 from crewai import Agent, Crew, Process, Task
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
+from pydantic import SecretStr
 
 load_dotenv()
+
+import os
+os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY", "").replace("\n", "").strip()
+os.environ["GROK_API_KEY"] = os.getenv("GROK_API_KEY", "").replace("\n", "").strip()
+
+import argparse
+import sys
+
+# Parse command-line arguments
+parser = argparse.ArgumentParser(description="Game Crew Script")
+
+# Mutually exclusive group for LLM provider
+group = parser.add_mutually_exclusive_group()
+group.add_argument("--grok", action="store_true", help="Use Grok API instead of OpenAI")
+group.add_argument("--openai", action="store_true", help="Use OpenAI (default)")
+
+args = parser.parse_args()
+
+if args.grok:
+    llm_provider = "grok"
+else:
+    llm_provider = "openai"
 
 agentops.init()
 
@@ -94,15 +117,23 @@ evaluate_task = Task(
     agent=chief_qa_engineer_agent,
 )
 
+if llm_provider == "openai":
+    manager_llm = ChatOpenAI(temperature=0, model="gpt-4o")
+else:
+    manager_llm = ChatOpenAI(
+        temperature=0,
+        model="grok-4-0709",
+        base_url="https://api.x.ai/v1",
+        api_key=SecretStr(value) if (value := os.getenv("GROK_API_KEY")) else None
+    )
+
 # Instantiate your crew with a sequential process
 crew = Crew(
     agents=[senior_engineer_agent, qa_engineer_agent, chief_qa_engineer_agent],
     tasks=[code_task, qa_task, evaluate_task],
-    verbose=2,  # You can set it to 1 or 2 to different logging levels
+    verbose=True,
     process=Process.hierarchical,
-    manager_llm=ChatOpenAI(
-        temperature=0, model="gpt-4"
-    ),  # Mandatory: Use a language model for manager
+    manager_llm=manager_llm,  # Mandatory: Use a language model for manager
 )
 
 # Get your crew to work!
